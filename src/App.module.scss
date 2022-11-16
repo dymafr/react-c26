@@ -5,23 +5,23 @@
 .enter,
 .appear {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateX(-10px);
 }
 
 .enterActive,
 .appearActive {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
     transition: opacity 1s, transform 1s;
 }
 
 .exit {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
 .exitActive {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateX(-10px);
     transition: opacity 1s, transform 1s;
 }

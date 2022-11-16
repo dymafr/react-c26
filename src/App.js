@@ -1,33 +1,57 @@
-import { useRef, useState } from 'react';
+import { createRef, useState } from 'react';
 import styles from './App.module.scss';
-import { SwitchTransition, CSSTransition } from 'react-transition-group';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 function App() {
-  const [show, setShow] = useState(true);
-  const refA = useRef(null);
-  const refB = useRef(null);
-  const ref = show ? refA : refB;
+  const [input, setInput] = useState('');
+  const [list, setList] = useState([]);
+
+  function addToList() {
+    setList([
+      ...list,
+      {
+        value: input,
+        key: crypto.randomUUID(),
+        ref: createRef(null),
+      },
+    ]);
+    setInput('');
+  }
 
   return (
-    <div
-      className={`d-flex flex-column p-20 align-items-center ${styles.appContainer}`}
-    >
-      <button onClick={() => setShow(!show)} className="btn btn-primary mb-20">
-        Switch
-      </button>
-      <SwitchTransition mode="in-out">
-        <CSSTransition
-          key={show ? '1' : '2'}
-          nodeRef={ref}
-          classNames={styles}
-          timeout={1000}
-        >
-          <div ref={ref}>
-            {show && <h1>A</h1>}
-            {!show && <h1>B</h1>}
-          </div>
-        </CSSTransition>
-      </SwitchTransition>
+    <div className={`d-flex flex-column p-20 ${styles.appContainer}`}>
+      <div>
+        <input
+          type="text"
+          className="mr-15"
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
+        />
+        <button onClick={addToList} className="btn btn-primary">
+          Submit
+        </button>
+      </div>
+      <ul>
+        <TransitionGroup>
+          {list.map(({ key, ref, value }) => (
+            <CSSTransition
+              nodeRef={ref}
+              timeout={500}
+              classNames={styles}
+              key={key}
+            >
+              <li ref={ref}>
+                <span className="mr-15">{value}</span>
+                <button
+                  onClick={() => setList(list.filter((el) => el.key !== key))}
+                >
+                  x
+                </button>
+              </li>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </ul>
     </div>
   );
 }
