@@ -12,7 +12,7 @@ function App() {
       {
         value: input,
         key: crypto.randomUUID(),
-        ref: createRef(null),
+        ref: createRef(),
       },
     ]);
     setInput('');
